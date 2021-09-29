@@ -1,26 +1,40 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
-import noPoster from '../assets/images/no-poster.jpg';
 
 function SearchMovies(){
 
-	const movies = [
-		{
-			"Title": "Parchís",
-			"Year": "1983",
-			"Poster": "https://m.media-amazon.com/images/M/MV5BYTgxNjg2MTAtYjhmYS00NjQwLTk1YTMtNmZmOTMyNTAwZWUwXkEyXkFqcGdeQXVyMTY5MDE5NA@@._V1_SX300.jpg"
-		},
-		{
-			"Title": "Brigada en acción",
-			"Year": "1977",
-			"Poster": "N/A"
-		},
-	];
+	const [movies, setMovies] = useState([])
 
-	const keyword = 'PELÍCULA DEMO';
+	const [keyword, setKeyword] = useState('action')
 
 	// Credenciales de API
-	const apiKey = 'X'; // Intenta poner cualquier cosa antes para probar
+	const apiKey = '88a823f8'; // Intenta poner cualquier cosa antes para probar
+
+	useEffect(
+		() => {
+
+			fetch(`http://www.omdbapi.com/?s=${keyword}&apikey=${apiKey}`)
+			.then( (data) => data.json() )
+			.then((parsedData) => {
+				setMovies(parsedData.Search)
+			})
+			.catch((error) => console.error(error))
+		
+		},
+		// Se ejecuta solamente una vez
+		[]
+	)
+
+	const onFormSubmission = (e) => {
+		e.preventDefault();
+		fetch(`http://www.omdbapi.com/?s=${keyword}&apikey=${apiKey}`)
+		.then( (data) => data.json() )
+		.then((parsedData) => {
+			setMovies(parsedData.Search)
+		})
+		.catch((error) => console.error(error))
+	}
+
 
 	return(
 		<div className="container-fluid">
@@ -30,10 +44,10 @@ function SearchMovies(){
 					<div className="row my-4">
 						<div className="col-12 col-md-6">
 							{/* Buscador */}
-							<form method="GET">
+							<form method="GET" onSubmit={onFormSubmission}> 
 								<div className="form-group">
 									<label htmlFor="">Buscar por título:</label>
-									<input type="text" className="form-control" />
+									<input onChange={(event) => setKeyword(event.target.value)} type="text" className="form-control" />
 								</div>
 								<button className="btn btn-info">Search</button>
 							</form>

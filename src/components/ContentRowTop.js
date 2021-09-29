@@ -22,14 +22,11 @@ function ContentRowTop() {
 			// Actualiza el título del documento usando la API del navegador
 			console.log(`You clicked ${count} times`);
 			// Lo que retorne == componentWillUnmount
-			return () => {
-				console.log('Componente destruido')
-			}
 		},
 		// Dependencias: Cambios en el valor de elementos del estado que van a disparar el useEffect
 		// Si dependencias == array vacío, es igual a componentDidMount()
 		[
-			
+			name
 		]
 	);
 
@@ -49,11 +46,11 @@ function ContentRowTop() {
 						 
 						 </h1>
 
-					<button onClick={() => divConDatos.current.style.border = '1px solid red'}>
+					<button onClick={() => divConDatos.current.style.color}>
 						Click me
      				</button>
 
-					<button ref={divConDatos} onClick={() => setName('Jorge')}>
+					<button onClick={() => setName('Jorge')}>
 						Cambiar nombre
      				</button>
 
